@@ -1,0 +1,139 @@
+extends layout
+
+block content
+    div(id='content', class='container')
+        div(class='my-3')
+            header
+                h2
+                    i(class='#{resource.icon} me-3')
+                    span #{resource.title}
+                    if resource.number
+                        span(class='ms-2 fs-4 fst-italic text-muted') #{resource.number}
+                    span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{resource.type}
+
+                if resource.authors
+                    h6
+                        each author, index in resource.authors
+                            if index != 0
+                                span &semi;&nbsp;
+                            span #{author}
+
+                else if resource.year || (resource.insideOfObj && resource.insideOfObj.year) || resource.publisher
+                    h6
+                        if resource.year
+                            each year in resource.year
+                                span(class='badge rounded-pill bg-secondary fw-lighter me-2') #{year}
+                        if resource.publisher
+                            span(class='text-muted') #{resource.publisher}
+
+        table(class='table table-bordered my-3 mt-5')
+            tbody
+                tr
+                    th Sygnatura
+                    td
+                        span(class='text-muted font-monospace') ##{resource.id}
+
+                tr
+                    th Tytuł
+                    td #{resource.title}
+
+                if resource.authors
+                    tr
+                        th(rowspan=resource.authors.length+1) Autorzy
+                    each author in resource.authors
+                        tr
+                            td
+                                span #{author}
+                                a(href='/?search=author:#{author}&deep=0' class='ms-1')
+                                    i(class='bi bi-list')
+                else
+                    tr
+                        th Autorzy
+                        td
+
+                tr
+                    th Wydawca
+                    td
+                        if resource.publisher
+                            span #{resource.publisher}
+                            a(href='/?search=publisher:#{resource.publisher}&deep=0' class='ms-1')
+                                i(class='bi bi-list')
+
+                tr
+                    th Rodzaj
+                    td #{resource.type}
+
+                if resource.year
+                    tr
+                        th(rowspan=resource.year.length+1) Rok
+                    each year in resource.year
+                        tr
+                            td #{year}
+                else
+                    tr
+                        th Rok
+                        td
+
+                if resource.number
+                    tr
+                        th Numer
+                        td #{resource.number}
+
+                if resource.insideOfObj
+                    tr
+                        th Zawarte w
+                        td
+                            if resource.insideOfObj
+                                i(class='#{resource.insideOfObj.icon}')
+                                span(class='ms-2')
+                                a(href='/#{resource.insideOfObj.id}') #{resource.insideOfObj.title}
+                                if resource.insideOfObj.number
+                                    span(class='mx-1 text-muted fst-italic') #{resource.insideOfObj.number}
+                                if resource.insideOfObj.year
+                                    span(class='mx-1 text-muted') (#{resource.insideOfObj.year})
+
+        if resource.comment
+            div(class='card card-body bg-info my-3')
+                p(class='card-text text-light') #{resource.comment}
+
+        if insideOfResources.length > 0
+            div(class='my-3 mt-5')
+                header
+                    h4(class='card-title')
+                        span W środku
+                        span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{insideOfResources.length}
+                div(class='card-text')
+                    each resource in insideOfResources
+                        - var showComment = true;
+                        - var showInsideOf = false;
+                        - var showSignature = false;
+                        include ./card.jade
+
+        if duplicateResources.length > 0
+            div(class='my-3 mt-5')
+                header
+                    h4(class='card-title')
+                        span Inne egzemplarze
+                        span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{duplicateResources.length}
+                div(class='card-text')
+                    each resource in duplicateResources
+                        - var showComment = true;
+                        - var showInsideOf = false;
+                        - var showSignature = true;
+                        include ./card.jade
+
+        if similarResources.length > 0
+            div(class='my-3 mt-5')
+                header
+                    h4(class='card-title')
+                        if resource.number
+                            span Inne numery
+                        else
+                            span Podobne
+                        span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{similarResources.length}
+                div(class='card-text')
+                    each resource in similarResources
+                        - var showComment = true;
+                        - var showInsideOf = false;
+                        - var showSignature = true;
+                        include ./card.jade

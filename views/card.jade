@@ -1,0 +1,51 @@
+div(class='card my-3')
+    div(class='card-body')
+        h4(class='card-title')
+            i(class='#{resource.icon} me-3')
+            a(href='/#{resource.id}') #{resource.title}
+            if resource.number
+                span(class='ms-2 fs-6 fst-italic text-muted') #{resource.number}
+            span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{resource.type}
+
+        if resource.authors
+            p(class='card-text')
+                each author, index in resource.authors
+                    if index != 0
+                        span &semi;&nbsp;
+                    span #{author}
+
+        if showComment && resource.comment
+            div(class='card card-body bg-info my-3')
+                p(class='card-text text-light') #{resource.comment}
+
+        if showSignature
+            p(class='card-text')
+                span(class='me-2 text-muted font-monospace fs-6') ##{resource.id}
+
+        if showInsideOf && resource.insideOfObj
+            p(class='card-text')
+                span(class='ms-4 me-2')
+                    i(class='#{resource.insideOfObj.icon}')
+                span(class='me-1') w
+                a(href='/#{resource.insideOfObj.id}') #{resource.insideOfObj.title}
+                if resource.insideOfObj.number
+                    span(class='mx-1 text-muted fst-italic') #{resource.insideOfObj.number}
+                if resource.insideOfObj.year
+                    span(class='mx-1 text-muted') (#{resource.insideOfObj.year})
+
+        else if resource.year || resource.publisher
+            p(class='card-text')
+                if resource.year
+                    each year in resource.year
+                        span(class='badge rounded-pill bg-secondary fw-lighter me-2') #{year}
+                if resource.publisher
+                    span(class='text-muted') #{resource.publisher}
+
+        if (resource.insideOfResourcesCount + resource.foreignInsideOfResourcesCount) > 0
+            p(class='card-text text-success')
+                span(class='ms-4 me-2')
+                    i(class='bi bi-plus-square')
+                span Dostępnych #{resource.insideOfResourcesCount+resource.foreignInsideOfResourcesCount} zasobów
+
+    if resource.resources
+        a(href='/#{resource.id}', class='card-footer btn text-muted fs-6') #{resource.resources.length} podobne

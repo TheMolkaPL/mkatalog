@@ -1,8 +1,21 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding-top: 60px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-a {
-  color: #00B7FF;
+footer {
+    margin-top: auto;
+}
+
+@media screen and (max-width: 600px) {
+    #navbar-brand {
+        display: none;
+    }
+
+    .navbar-brand {
+        margin-right: 0px;
+    }
 }
