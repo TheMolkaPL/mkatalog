@@ -26,7 +26,26 @@ block content
                         if resource.publisher
                             span(class='text-muted') #{resource.publisher}
 
-        table(class='table table-bordered my-3 mt-5')
+        div(class='mt-5')
+            if insideOfResources.length > 0
+                a(href='#contents' class='btn btn-outline-secondary btn-sm btn-of-contents me-3 px-3')
+                    i(class='bi bi-caret-down-fill me-2')
+                    span W środku
+            if duplicateResources.length > 0
+                a(href='#duplicates' class='btn btn-outline-secondary btn-sm btn-of-contents me-3 px-3')
+                    i(class='bi bi-caret-down-fill me-2')
+                    span Inne egzemplarze
+            if similarResources.length > 0
+                if resource.number
+                    a(href='#numbers' class='btn btn-outline-secondary btn-sm btn-of-contents me-3 px-3')
+                        i(class='bi bi-caret-down-fill me-2')
+                        span Inne numery
+                else
+                    a(href='#similar' class='btn btn-outline-secondary btn-sm btn-of-contents me-3 px-3')
+                        i(class='bi bi-caret-down-fill me-2')
+                        span Podobne
+
+        table(class='table table-bordered my-3')
             tbody
                 tr
                     th Sygnatura
@@ -97,7 +116,7 @@ block content
                 p(class='card-text text-light') #{resource.comment}
 
         if insideOfResources.length > 0
-            div(class='my-3 mt-5')
+            div(class='my-3 mt-5' id='contents')
                 header
                     h4(class='card-title')
                         span W środku
@@ -110,7 +129,7 @@ block content
                         include ./card.jade
 
         if duplicateResources.length > 0
-            div(class='my-3 mt-5')
+            div(class='my-3 mt-5' id='duplicates')
                 header
                     h4(class='card-title')
                         span Inne egzemplarze
@@ -123,7 +142,11 @@ block content
                         include ./card.jade
 
         if similarResources.length > 0
-            div(class='my-3 mt-5')
+            - var similarOrNumbers = 'similar';
+            if resource.number
+                - similarOrNumbers = 'numbers';
+
+            div(class='my-3 mt-5' id='#{similarOrNumbers}')
                 header
                     h4(class='card-title')
                         if resource.number
