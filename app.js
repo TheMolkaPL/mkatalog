@@ -225,6 +225,10 @@ class Resource {
     }
 
     matches0(query, options, params) {
+        if (!options) {
+            options = {};
+        }
+
         query = query.toString().trim();
         if (options.ignoreCase) {
             query = query.toLowerCase();
