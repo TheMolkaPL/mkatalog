@@ -14,6 +14,10 @@ footer {
     min-width: 200px;
 }
 
+.toggler-js {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 600px) {
     #navbar-brand {
         display: none;

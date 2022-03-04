@@ -118,10 +118,12 @@ block content
         if insideOfResources.length > 0
             div(class='my-3 mt-5' id='contents')
                 header
-                    h4(class='card-title')
+                    h4(class='toggler-js' toggler-icon='contents-icon' toggler-div='contents-div')
+                        span(class='me-2')
+                            i(class='bi bi-plus' id='contents-icon')
                         span W środku
                         span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{insideOfResources.length}
-                div(class='card-text')
+                div(id='contents-div')
                     each resource in insideOfResources
                         - var showComment = true;
                         - var showInsideOf = false;
@@ -131,10 +133,12 @@ block content
         if duplicateResources.length > 0
             div(class='my-3 mt-5' id='duplicates')
                 header
-                    h4(class='card-title')
+                    h4(class='toggler-js' toggler-icon='duplicates-icon' toggler-div='duplicates-div')
+                        span(class='me-2')
+                            i(class='bi bi-plus' id='duplicates-icon')
                         span Inne egzemplarze
                         span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{duplicateResources.length}
-                div(class='card-text')
+                div(id='duplicates-div')
                     each resource in duplicateResources
                         - var showComment = true;
                         - var showInsideOf = false;
@@ -148,13 +152,15 @@ block content
 
             div(class='my-3 mt-5' id='#{similarOrNumbers}')
                 header
-                    h4(class='card-title')
+                    h4(class='toggler-js' toggler-icon='#{similarOrNumbers}-icon' toggler-div='#{similarOrNumbers}-div')
+                        span(class='me-2')
+                            i(class='bi bi-plus' id='#{similarOrNumbers}-icon')
                         if resource.number
                             span Inne numery
                         else
                             span Podobne
                         span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{similarResources.length}
-                div(class='card-text')
+                div(id='#{similarOrNumbers}-div')
                     each resource in similarResources
                         - var showComment = true;
                         - var showInsideOf = false;
