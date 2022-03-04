@@ -4,6 +4,9 @@ block content
     div(id='content', class='container')
         div(class='my-3')
             header
+                h4
+                    small(class='text-muted me-2') zasób
+                    span(class='text-muted font-monospace me-3') ##{resource.id}
                 h2
                     i(class='#{resource.icon} me-3')
                     span #{resource.title}
