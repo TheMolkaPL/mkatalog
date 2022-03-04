@@ -1,0 +1,121 @@
+extends layout
+
+block content
+    div(id='content', class='container')
+        div(class='my-3')
+            header
+                h4
+                    small(class='text-muted me-3') przegląd
+                h2
+                    i(class='#{summary.icon} me-3')
+                    span #{summary.title}
+                    span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{summary.type}
+
+                if summary.authors.length > 0
+                    h6
+                        each author, index in summary.authors
+                            if index != 0
+                                span &semi;&#32;
+                            span #{author}
+
+                else if summary.publishers.length == 1
+                    h6
+                        span(class='text-muted') #{summary.publishers[0]}
+
+        div(class='mt-5')
+            if insideOfResources.length > 0
+                a(href='#contents' class='btn btn-outline-secondary btn-sm btn-of-contents me-3 px-3')
+                    i(class='bi bi-caret-down-fill me-2')
+                    span W środku
+            if resources.length > 0
+                a(href='#resources' class='btn btn-outline-secondary btn-sm btn-of-contents me-3 px-3')
+                    i(class='bi bi-caret-down-fill me-2')
+                    span Zasoby
+
+        table(class='table table-bordered my-3')
+            tbody
+                tr
+                    th(style='width: 200px;') Tytuł
+                    td #{summary.title}
+
+                if summary.authors.length > 0
+                    tr
+                        th(rowspan=summary.authors.length+1) Autorzy
+                    each author in summary.authors
+                        tr
+                            td
+                                span #{author}
+                                a(href='/search?query=author:#{author}&deep=0' class='ms-1')
+                                    i(class='bi bi-list')
+                else
+                    tr
+                        th Autorzy
+                        td
+
+                if summary.publishers.length > 0
+                    tr
+                        th(rowspan=summary.publishers.length+1) Wydawcy
+                    each publisher in summary.publishers
+                        tr
+                            td
+                                span #{publisher}
+                                a(href='/search?query=publisher:#{publisher}&deep=0' class='ms-1')
+                                    i(class='bi bi-list')
+                else
+                    tr
+                        th Wydawcy
+                        td
+
+                tr
+                    th Rodzaj
+                    td #{summary.type}
+
+                tr
+                    th Rok
+                    td
+                        each year, index in summary.year
+                            if index != 0
+                                span &#44;&#32;
+                            span #{year}
+
+                if summary.insideOfObj
+                    tr
+                        th Zawarte w
+                        td
+                            i(class='#{summary.insideOfObj.icon}')
+                            span(class='ms-2')
+                            a(href='/overview/#{summary.insideOfObj.title}') #{summary.insideOfObj.title}
+                            if summary.insideOfObj.number
+                                span(class='mx-1 text-muted fst-italic') #{summary.insideOfObj.number}
+                            if summary.insideOfObj.year
+                                span(class='mx-1 text-muted') (#{summary.insideOfObj.year})
+
+        if insideOfResources.length > 0
+            div(class='my-3 mt-5' id='contents')
+                header
+                    h4(class='toggler-js' toggler-icon='contents-icon' toggler-div='contents-div')
+                        span(class='me-2')
+                            i(class='bi bi-plus' id='contents-icon')
+                        span W środku
+                        span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{insideOfResources.length}
+                div(id='contents-div')
+                    each resource in insideOfResources
+                        - var showComment = true;
+                        - var showInsideOf = false;
+                        - var showSignature = false;
+                        include ./card.jade
+
+        if resources.length > 0
+            div(class='my-3 mt-5' id='resources')
+                header
+                    h4(class='toggler-js' toggler-icon='resources-icon' toggler-div='resources-div')
+                        span(class='me-2')
+                            i(class='bi bi-plus' id='resources-icon')
+                        span Zasoby
+                        span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{resources.length}
+                div(id='resources-div')
+                    each resource in resources
+                        - var showComment = true;
+                        - var showInsideOf = false;
+                        - var showSignature = true;
+                        include ./card.jade

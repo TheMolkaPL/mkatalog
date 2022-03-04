@@ -89,7 +89,100 @@ app.get(['/', '/search'], function(req, res, next) {
     });
 });
 
-app.get('/:id', function(req, res, next) {
+app.get('/overview/:title(*)', function(req, res, next) {
+    const title = req.params.title;
+    const resources = postReadResources(readCsvResources('../database.csv'), false);
+
+    const numbers = [];
+    for (let i = 0; i < resources.length; i++) {
+        if (resources[i].title == title) {
+            numbers.push(resources[i]);
+        }
+    }
+
+    if (numbers.length == 0) {
+        next();
+        return;
+    }
+
+    const authors = [];
+    const year = [];
+    const publishers = [];
+    const insideOfResources = [];
+
+    for (let i = 0; i < numbers.length; i++) {
+        const resource = numbers[i];
+
+        if (resource.authors) {
+            for (let i0 = 0; i0 < resource.authors.length; i0++) {
+                if (!authors.includes(resource.authors[i0])) {
+                    authors.push(resource.authors[i0]);
+                }
+            }
+        }
+
+        if (resource.year) {
+            for (let i0 = 0; i0 < resource.year.length; i0++) {
+                if (!year.includes(resource.year[i0])) {
+                    year.push(resource.year[i0]);
+                }
+            }
+        }
+
+        if (resource.publisher && !publishers.includes(resource.publisher)) {
+            publishers.push(resource.publisher);
+        }
+
+        insideOfLoop: for (let i0 = 0; i0 < resources.length; i0++) {
+            if (!resources[i0].insideOfId) {
+                continue;
+            }
+
+            for (let i1 = 0; i1 < numbers.length; i1++) {
+                if (numbers[i1].id == resources[i0].insideOfId) {
+                    if (!insideOfResources.includes(resources[i0])) {
+                        insideOfResources.push(resources[i0]);
+                    }
+                    continue insideOfLoop;
+                }
+            }
+        }
+    }
+
+    authors.sort((a, b) => a.toString().localeCompare(b.toString()), undefined, { numeric: true});
+    year.sort((a, b) => a.toString().localeCompare(b.toString()), undefined, { numeric: true});
+    publishers.sort((a, b) => a.toString().localeCompare(b.toString()), undefined, { numeric: true});
+    insideOfResources.sort((a, b) => a.compareTo(b));
+
+    var insideOfObj = undefined;
+    if (numbers[0].insideOfObj) {
+        const obj = numbers[0].insideOfObj;
+        insideOfObj = {
+            title: obj.title,
+            year: obj.year,
+            number: obj.number,
+            icon: obj.icon
+        }
+    }
+
+    res.render('overview', {
+        title: 'Przegląd ' + numbers[0].title,
+        searchValue: '',
+        summary: {
+            title: numbers[0].title,
+            type: numbers[0].type,
+            authors: authors,
+            year: year,
+            publishers: publishers,
+            icon: numbers[0].icon,
+            insideOfObj: insideOfObj
+        },
+        insideOfResources: insideOfResources,
+        resources: numbers
+    });
+});
+
+app.get('/resource/:id', function(req, res, next) {
     const id = req.params.id;
     const resources = postReadResources(readCsvResources('../database.csv'), false);
 

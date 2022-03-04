@@ -2,7 +2,10 @@ div(class='card my-3')
     div(class='card-body')
         h4(class='card-title')
             i(class='#{resource.icon} me-3')
-            a(href='/#{resource.id}') #{resource.title}
+            if showSignature
+                a(href='/resource/#{resource.id}') #{resource.title}
+            else
+                a(href='/overview/#{resource.title}') #{resource.title}
             if resource.number
                 span(class='ms-2 fs-6 fst-italic text-muted') #{resource.number}
             span(class='badge rounded-pill bg-secondary fw-lighter mx-2 fs-6') #{resource.type}
@@ -27,7 +30,7 @@ div(class='card my-3')
                 span(class='ms-4 me-2')
                     i(class='#{resource.insideOfObj.icon}')
                 span(class='me-1') w
-                a(href='/#{resource.insideOfObj.id}') #{resource.insideOfObj.title}
+                a(href='/overview/#{resource.insideOfObj.title}') #{resource.insideOfObj.title}
                 if resource.insideOfObj.number
                     span(class='mx-1 text-muted fst-italic') #{resource.insideOfObj.number}
                 if resource.insideOfObj.year
@@ -48,4 +51,7 @@ div(class='card my-3')
                 span Dostępnych #{resource.insideOfResourcesCount+resource.foreignInsideOfResourcesCount} zasobów
 
     if resource.resources
-        a(href='/#{resource.id}', class='card-footer btn text-muted fs-6') #{resource.resources.length} podobne
+        a(href='/overview/#{resource.title}', class='card-footer btn text-muted fs-6')
+            span Przegląd&#32;
+            strong #{resource.resources.length}
+            span &#32;podobnych
