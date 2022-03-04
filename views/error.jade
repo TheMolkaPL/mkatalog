@@ -2,6 +2,9 @@ extends layout
 
 block content
     div(id='content', class='container')
-        h1 #{message}
-        h2 #{error.status}
+        h1
+            span(class='display-1') #{message}
+        h2
+            span #{error.status}
+
         pre #{error.stack}
