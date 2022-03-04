@@ -15,7 +15,7 @@ block content
                     h6
                         each author, index in resource.authors
                             if index != 0
-                                span &semi;&nbsp;
+                                span &semi;&#32;
                             span #{author}
 
                 else if resource.year || (resource.insideOfObj && resource.insideOfObj.year) || resource.publisher
