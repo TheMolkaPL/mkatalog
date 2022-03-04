@@ -15,8 +15,8 @@ html(lang='pl', dir='ltr')
                 a(class='navbar-brand', href='/')
                     i(class='bi bi-bookmark mx-3')
                     span(id='navbar-brand') Katalog biblioteczny
-                form(class='d-flex col', action='/', method='get')
-                    input(class='form-control me-2', type='search', name='search', placeholder='Szukaj w katalogu...', aria-label='Szukaj', spellcheck='false', autocomplete='off', autofocus='true', value='#{searchValue}')
+                form(class='d-flex col', action='/search', method='get')
+                    input(class='form-control me-2', type='search', name='query', placeholder='Szukaj w katalogu...', aria-label='Szukaj', spellcheck='false', autocomplete='off', autofocus='true', value='#{searchValue}')
                     button(class='btn btn-outline-primary' type='submit')
                         i(class='bi bi-search')
 

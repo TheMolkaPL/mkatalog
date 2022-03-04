@@ -38,8 +38,8 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-app.get('/', function(req, res, next) {
-    const search = req.query.search;
+app.get(['/', '/search'], function(req, res, next) {
+    const query = req.query.query;
     const deep = getBool(req.query.deep, true);
     const merge = getBool(req.query.merge, true);
     const showComments = getBool(req.query.comments, false);
@@ -47,15 +47,15 @@ app.get('/', function(req, res, next) {
     let resources = postReadResources(readCsvResources('../database.csv'), merge);
 
     let searchValue = '';
-    if (search) {
-        if (search.startsWith('#')) {
-            res.redirect('/' + search.substring(1));
+    if (query) {
+        if (query.startsWith('#')) {
+            res.redirect('/resource/' + query.substring(1));
             return;
         }
 
-        searchValue = search;
+        searchValue = query;
 
-        const searchQuery = search.split(' ');
+        const searchQuery = searchValue.split(' ');
         const matchingResources = [];
 
         resources.forEach(resource => {
